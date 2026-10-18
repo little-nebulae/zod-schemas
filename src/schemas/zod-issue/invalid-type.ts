@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { OpenStringSchema } from "@/schemas/open-string";
 import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod-issue/base";
 
 export const ZOD_INVALID_TYPE_EXPECTED_RECORD = {
@@ -55,7 +56,7 @@ export function ZodIssueInvalidTypeSchema<Input = unknown>() {
     code: z.literal("invalid_type"),
     expected: z.union([
       z.enum(ZOD_INVALID_TYPE_EXPECTED_LIST),
-      z.string<string & {}>(),
+      OpenStringSchema,
     ]),
     input: z.custom<Input>().exactOptional(),
   }).readonly();
