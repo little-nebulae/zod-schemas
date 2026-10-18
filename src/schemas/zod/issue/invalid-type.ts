@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { OpenEnumSchema } from "@/schemas/open-enum";
 import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod/issue/base";
+import { ZOD_ISSUE_CODE_ENUM } from "@/schemas/zod/issue/code";
 import { ZodIssueInputSchema } from "@/schemas/zod/issue/input";
 
 export const ZOD_INVALID_TYPE_EXPECTED_ENUM = {
@@ -30,7 +31,7 @@ export const ZOD_INVALID_TYPE_EXPECTED_ENUM = {
 
 export function ZodIssueInvalidTypeSchema<Input = unknown>() {
   return ExtensibleZodIssueBaseSchema.safeExtend({
-    code: z.literal("invalid_type"),
+    code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_TYPE),
     expected: OpenEnumSchema(z.enum(ZOD_INVALID_TYPE_EXPECTED_ENUM)),
     input: ZodIssueInputSchema<Input>(),
   }).readonly();

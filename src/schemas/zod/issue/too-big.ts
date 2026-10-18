@@ -2,11 +2,12 @@ import { z } from "zod";
 
 import { ZodBoundOriginSchema } from "@/schemas/zod/bound-origin";
 import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod/issue/base";
+import { ZOD_ISSUE_CODE_ENUM } from "@/schemas/zod/issue/code";
 import { ZodIssueInputSchema } from "@/schemas/zod/issue/input";
 
 export function ZodIssueTooBigSchema<Input = unknown>() {
   return ExtensibleZodIssueBaseSchema.safeExtend({
-    code: z.literal("too_big"),
+    code: z.literal(ZOD_ISSUE_CODE_ENUM.TOO_BIG),
     origin: ZodBoundOriginSchema,
     maximum: z.union([z.number(), z.bigint()]),
     inclusive: z.boolean().exactOptional(),
