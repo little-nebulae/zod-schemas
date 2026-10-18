@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { OpenEnumSchema } from "@/schemas/open-enum";
-import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod-issue/base";
+import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod/issue/base";
 import { ZodStringFormatSchema } from "@/schemas/zod/string-formats";
 
 export const ZodIssueInvalidStringFormatSchema =

@@ -1,8 +1,8 @@
 import { z } from "zod";
 
 import { OpenEnumSchema } from "@/schemas/open-enum";
-import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod-issue/base";
-import { ZodIssueInputSchema } from "@/schemas/zod-issue/input";
+import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod/issue/base";
+import { ZodIssueInputSchema } from "@/schemas/zod/issue/input";
 
 export const ZOD_INVALID_TYPE_EXPECTED_ENUM = {
   STRING: "string",

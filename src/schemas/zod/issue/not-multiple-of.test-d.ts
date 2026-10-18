@@ -2,7 +2,7 @@ import type { $ZodIssueNotMultipleOf } from "zod/v4/core";
 
 import { describe, expectTypeOf, test } from "vitest";
 
-import type { ZodIssueNotMultipleOf } from "@/schemas/zod-issue/not-multiple-of";
+import type { ZodIssueNotMultipleOf } from "@/schemas/zod/issue/not-multiple-of";
 
 describe("ZodIssueNotMultipleOf type should be equal to", () => {
   test("$ZodIssueNotMultipleOf", () => {

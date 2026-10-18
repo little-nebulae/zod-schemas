@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod-issue/base";
-import { ZodIssueInputSchema } from "@/schemas/zod-issue/input";
+import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod/issue/base";
+import { ZodIssueInputSchema } from "@/schemas/zod/issue/input";
 
 export function ZodIssueNotMultipleOfSchema<
   Input extends number | bigint = number | bigint,

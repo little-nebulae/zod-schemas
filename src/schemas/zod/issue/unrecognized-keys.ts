@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod-issue/base";
+import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod/issue/base";
 
 export const ZodIssueUnrecognizedKeysSchema =
   ExtensibleZodIssueBaseSchema.safeExtend({

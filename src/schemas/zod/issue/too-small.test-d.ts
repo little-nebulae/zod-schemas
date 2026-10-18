@@ -2,7 +2,7 @@ import type { $ZodIssueTooSmall } from "zod/v4/core";
 
 import { describe, expectTypeOf, test } from "vitest";
 
-import type { ZodIssueTooSmall } from "@/schemas/zod-issue/too-small";
+import type { ZodIssueTooSmall } from "@/schemas/zod/issue/too-small";
 
 describe("ZodIssueTooSmall type should be equal to", () => {
   test("$ZodIssueTooSmall", () => {
