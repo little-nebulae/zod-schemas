@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { OpenEnumSchema } from "@/schemas/open-enum";
+
 export const LENGTH_ORIGIN_ENUM = {
   NUMBER: "number",
   INT: "int",
@@ -11,5 +13,5 @@ export const LENGTH_ORIGIN_ENUM = {
   FILE: "file",
 } as const;
 
-export const LengthOriginSchema = z.enum(LENGTH_ORIGIN_ENUM);
+export const LengthOriginSchema = OpenEnumSchema(z.enum(LENGTH_ORIGIN_ENUM));
 export type LengthOrigin = z.infer<typeof LengthOriginSchema>;
