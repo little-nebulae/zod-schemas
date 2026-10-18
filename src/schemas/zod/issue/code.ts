@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export const ZOD_ISSUE_CODE_ENUM = {
   INVALID_TYPE: "invalid_type",
   TOO_BIG: "too_big",
@@ -11,3 +13,6 @@ export const ZOD_ISSUE_CODE_ENUM = {
   INVALID_VALUE: "invalid_value",
   CUSTOM: "custom",
 } as const;
+
+export const ZodIssueCodeSchema = z.enum(ZOD_ISSUE_CODE_ENUM);
+export type ZodIssueCode = z.infer<typeof ZodIssueCodeSchema>;
