@@ -1,3 +1,7 @@
+import { z } from "zod";
+
+import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod-issue/base";
+
 export const ZOD_INVALID_TYPE_EXPECTED_RECORD = {
   STRING: "string",
   NUMBER: "number",
@@ -45,3 +49,14 @@ export const ZOD_INVALID_TYPE_EXPECTED_LIST = [
   ZOD_INVALID_TYPE_EXPECTED_RECORD.NAN,
   ZOD_INVALID_TYPE_EXPECTED_RECORD.FUNCTION,
 ] as const;
+
+export function ZodIssueInvalidTypeSchema<Input = unknown>() {
+  return ExtensibleZodIssueBaseSchema.safeExtend({
+    code: z.literal("invalid_type"),
+    expected: z.enum(ZOD_INVALID_TYPE_EXPECTED_LIST),
+    input: z.custom<Input>().exactOptional(),
+  }).readonly();
+}
+export type ZodIssueInvalidType<Input = unknown> = z.infer<
+  ReturnType<typeof ZodIssueInvalidTypeSchema<Input>>
+>;
