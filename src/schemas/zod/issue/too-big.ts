@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-import { LengthOriginSchema } from "@/schemas/length-origin";
 import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod/issue/base";
 import { ZodIssueInputSchema } from "@/schemas/zod/issue/input";
+import { ZodLengthOriginSchema } from "@/schemas/zod/length-origin";
 
 export function ZodIssueTooBigSchema<Input = unknown>() {
   return ExtensibleZodIssueBaseSchema.safeExtend({
     code: z.literal("too_big"),
-    origin: LengthOriginSchema,
+    origin: ZodLengthOriginSchema,
     maximum: z.union([z.number(), z.bigint()]),
     inclusive: z.boolean().exactOptional(),
     exact: z.boolean().exactOptional(),
