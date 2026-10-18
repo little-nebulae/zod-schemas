@@ -1,13 +1,13 @@
 import { z } from "zod";
 
-import { OpenStringSchema } from "@/schemas/open-string";
+import { OpenEnumSchema } from "@/schemas/open-enum";
 import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod-issue/base";
 import { ZodStringFormatsSchema } from "@/schemas/zod/string-formats";
 
 export const ZodIssueInvalidStringFormatSchema =
   ExtensibleZodIssueBaseSchema.safeExtend({
     code: z.literal("invalid_format"),
-    format: z.union([ZodStringFormatsSchema, OpenStringSchema]),
+    format: OpenEnumSchema(ZodStringFormatsSchema),
     pattern: z.string().exactOptional(),
     input: z.string().exactOptional(),
   }).readonly();
