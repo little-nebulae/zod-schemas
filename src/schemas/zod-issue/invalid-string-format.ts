@@ -1,12 +1,12 @@
 import { z } from "zod";
 
 import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod-issue/base";
-import { ZodStringFormatSchema } from "@/schemas/zod/string-format";
+import { ZodStringFormatsSchema } from "@/schemas/zod/string-formats";
 
 export const ZodIssueInvalidStringFormatSchema =
   ExtensibleZodIssueBaseSchema.safeExtend({
     code: z.literal("invalid_format"),
-    format: z.union([ZodStringFormatSchema, z.string<string & {}>()]),
+    format: z.union([ZodStringFormatsSchema, z.string<string & {}>()]),
     pattern: z.string().exactOptional(),
     input: z.string().exactOptional(),
   }).readonly();

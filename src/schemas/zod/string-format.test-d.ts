@@ -3,10 +3,10 @@ import type { $ZodStringFormats } from "zod/v4/core";
 
 import { expectTypeOf, test } from "vitest";
 
-import type { ZodStringFormatSchema } from "@/schemas/zod/string-format";
+import type { ZodStringFormatsSchema } from "@/schemas/zod/string-formats";
 
-test("ZodStringFormatSchema's inferred type should be equal to $ZodStringFormats type", () => {
+test("ZodStringFormatsSchema's inferred type should be equal to $ZodStringFormats type", () => {
   expectTypeOf<
-    z.infer<typeof ZodStringFormatSchema>
+    z.infer<typeof ZodStringFormatsSchema>
   >().toEqualTypeOf<$ZodStringFormats>();
 });
