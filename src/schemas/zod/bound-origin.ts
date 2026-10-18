@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { OpenEnumSchema } from "@/schemas/open-enum";
 
-export const ZOD_LENGTH_ORIGIN_ENUM = {
+export const ZOD_BOUND_ORIGIN_ENUM = {
   NUMBER: "number",
   INT: "int",
   BIGINT: "bigint",
@@ -13,7 +13,7 @@ export const ZOD_LENGTH_ORIGIN_ENUM = {
   FILE: "file",
 } as const;
 
-export const ZodLengthOriginSchema = OpenEnumSchema(
-  z.enum(ZOD_LENGTH_ORIGIN_ENUM),
+export const ZodBoundOriginSchema = OpenEnumSchema(
+  z.enum(ZOD_BOUND_ORIGIN_ENUM),
 );
-export type ZodLengthOrigin = z.infer<typeof ZodLengthOriginSchema>;
+export type ZodBoundOrigin = z.infer<typeof ZodBoundOriginSchema>;
