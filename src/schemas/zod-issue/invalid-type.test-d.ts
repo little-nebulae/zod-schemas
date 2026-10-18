@@ -8,4 +8,11 @@ describe("ZodIssueInvalidType type should be equal to", () => {
   test("$ZodIssueInvalidType", () => {
     expectTypeOf<ZodIssueInvalidType>().toEqualTypeOf<$ZodIssueInvalidType>();
   });
+
+  test("$ZodIssueInvalidType when they both have the same Input generic", () => {
+    type Input = { text: string; count: number };
+    expectTypeOf<ZodIssueInvalidType<Input>>().toEqualTypeOf<
+      $ZodIssueInvalidType<Input>
+    >();
+  });
 });
