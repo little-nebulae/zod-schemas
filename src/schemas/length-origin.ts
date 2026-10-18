@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const LENGTH_ORIGIN_RECORD = {
+export const LENGTH_ORIGIN_ENUM = {
   NUMBER: "number",
   INT: "int",
   BIGINT: "bigint",
@@ -11,16 +11,5 @@ export const LENGTH_ORIGIN_RECORD = {
   FILE: "file",
 } as const;
 
-export const LENGTH_ORIGIN_LIST = [
-  LENGTH_ORIGIN_RECORD.NUMBER,
-  LENGTH_ORIGIN_RECORD.INT,
-  LENGTH_ORIGIN_RECORD.BIGINT,
-  LENGTH_ORIGIN_RECORD.DATE,
-  LENGTH_ORIGIN_RECORD.STRING,
-  LENGTH_ORIGIN_RECORD.ARRAY,
-  LENGTH_ORIGIN_RECORD.SET,
-  LENGTH_ORIGIN_RECORD.FILE,
-] as const;
-
-export const LengthOriginSchema = z.enum(LENGTH_ORIGIN_LIST);
+export const LengthOriginSchema = z.enum(LENGTH_ORIGIN_ENUM);
 export type LengthOrigin = z.infer<typeof LengthOriginSchema>;

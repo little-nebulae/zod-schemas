@@ -1,12 +1,9 @@
-import type { z } from "zod";
 import type { $ZodStringFormats } from "zod/v4/core";
 
 import { expectTypeOf, test } from "vitest";
 
-import type { ZodStringFormatsSchema } from "@/schemas/zod/string-formats";
+import type { ZodStringFormat } from "@/schemas/zod/string-formats";
 
-test("ZodStringFormatsSchema's inferred type should be equal to $ZodStringFormats type", () => {
-  expectTypeOf<
-    z.infer<typeof ZodStringFormatsSchema>
-  >().toEqualTypeOf<$ZodStringFormats>();
+test("ZodStringFormat type should be equal to $ZodStringFormats type", () => {
+  expectTypeOf<ZodStringFormat>().toEqualTypeOf<$ZodStringFormats>();
 });
