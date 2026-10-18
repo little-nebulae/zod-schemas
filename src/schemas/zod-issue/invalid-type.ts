@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { OpenStringSchema } from "@/schemas/open-string";
+import { OpenEnumSchema } from "@/schemas/open-enum";
 import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod-issue/base";
 
 export const ZOD_INVALID_TYPE_EXPECTED_RECORD = {
@@ -54,10 +54,7 @@ export const ZOD_INVALID_TYPE_EXPECTED_LIST = [
 export function ZodIssueInvalidTypeSchema<Input = unknown>() {
   return ExtensibleZodIssueBaseSchema.safeExtend({
     code: z.literal("invalid_type"),
-    expected: z.union([
-      z.enum(ZOD_INVALID_TYPE_EXPECTED_LIST),
-      OpenStringSchema,
-    ]),
+    expected: OpenEnumSchema(z.enum(ZOD_INVALID_TYPE_EXPECTED_LIST)),
     input: z.custom<Input>().exactOptional(),
   }).readonly();
 }
