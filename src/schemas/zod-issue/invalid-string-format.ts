@@ -1,3 +1,7 @@
+import { z } from "zod";
+
+import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod-issue/base";
+
 export const ZOD_STRING_FORMAT_RECORD = {
   EMAIL: "email",
   URL: "url",
@@ -67,3 +71,14 @@ export const ZOD_STRING_FORMAT_LIST = [
   ZOD_STRING_FORMAT_RECORD.ENDS_WITH,
   ZOD_STRING_FORMAT_RECORD.INCLUDES,
 ] as const;
+
+export const ZodIssueInvalidStringFormatSchema =
+  ExtensibleZodIssueBaseSchema.safeExtend({
+    code: z.literal("invalid_format"),
+    format: z.union([z.enum(ZOD_STRING_FORMAT_LIST), z.string<string & {}>()]),
+    pattern: z.string().exactOptional(),
+    input: z.string().exactOptional(),
+  }).readonly();
+export type ZodIssueInvalidStringFormat = z.infer<
+  typeof ZodIssueInvalidStringFormatSchema
+>;
