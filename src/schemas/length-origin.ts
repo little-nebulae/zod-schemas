@@ -1,0 +1,23 @@
+export const LENGTH_ORIGIN_RECORD = {
+  NUMBER: "number",
+  INT: "int",
+  BIGINT: "bigint",
+  DATE: "date",
+  STRING: "string",
+  ARRAY: "array",
+  SET: "set",
+  FILE: "file",
+} as const;
+
+export const LENGTH_ORIGIN_LIST = [
+  LENGTH_ORIGIN_RECORD.NUMBER,
+  LENGTH_ORIGIN_RECORD.INT,
+  LENGTH_ORIGIN_RECORD.BIGINT,
+  LENGTH_ORIGIN_RECORD.DATE,
+  LENGTH_ORIGIN_RECORD.STRING,
+  LENGTH_ORIGIN_RECORD.ARRAY,
+  LENGTH_ORIGIN_RECORD.SET,
+  LENGTH_ORIGIN_RECORD.FILE,
+] as const;
+
+export type LengthOrigin = (typeof LENGTH_ORIGIN_LIST)[number];
