@@ -53,7 +53,10 @@ export const ZOD_INVALID_TYPE_EXPECTED_LIST = [
 export function ZodIssueInvalidTypeSchema<Input = unknown>() {
   return ExtensibleZodIssueBaseSchema.safeExtend({
     code: z.literal("invalid_type"),
-    expected: z.enum(ZOD_INVALID_TYPE_EXPECTED_LIST),
+    expected: z.union([
+      z.enum(ZOD_INVALID_TYPE_EXPECTED_LIST),
+      z.string<string & {}>(),
+    ]),
     input: z.custom<Input>().exactOptional(),
   }).readonly();
 }
