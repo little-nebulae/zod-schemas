@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export const LENGTH_ORIGIN_RECORD = {
   NUMBER: "number",
   INT: "int",
@@ -20,4 +22,5 @@ export const LENGTH_ORIGIN_LIST = [
   LENGTH_ORIGIN_RECORD.FILE,
 ] as const;
 
-export type LengthOrigin = (typeof LENGTH_ORIGIN_LIST)[number];
+export const LengthOriginSchema = z.enum(LENGTH_ORIGIN_LIST);
+export type LengthOrigin = z.infer<typeof LengthOriginSchema>;
