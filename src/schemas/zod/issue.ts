@@ -3,6 +3,7 @@ import { z } from "zod";
 import { OpenEnumSchema } from "@/schemas/open-enum";
 import { PrimitiveSchema } from "@/schemas/primitive";
 import { PropertyKeySchema } from "@/schemas/property-key";
+import { ZodStringFormatSchema } from "@/schemas/zod/string-format";
 
 export const ZOD_ISSUE_CODE_KEY = "code";
 
@@ -98,6 +99,14 @@ export const ZodIssueTooSmallSchema = z.object({
   exact: z.boolean().exactOptional(),
 });
 
+export const ZodIssueInvalidStringFormatSchema = z.object({
+  ...ZodIssueBaseSchema.shape,
+  code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_FORMAT),
+  input: z.string().exactOptional(),
+  format: OpenEnumSchema(ZodStringFormatSchema),
+  pattern: z.string().exactOptional(),
+});
+
 export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
   input: ZodIssueInputSchema,
@@ -135,6 +144,7 @@ export const ZodIssueSchema = z.discriminatedUnion(ZOD_ISSUE_CODE_KEY, [
   ZodIssueInvalidTypeSchema,
   ZodIssueTooBigSchema,
   ZodIssueTooSmallSchema,
+  ZodIssueInvalidStringFormatSchema,
   ...ZodIssueInvalidUnionSchema.options,
   ZodIssueCustomSchema,
 ]);
