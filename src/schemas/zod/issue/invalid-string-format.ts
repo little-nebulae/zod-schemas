@@ -3,7 +3,7 @@ import { z } from "zod";
 import { OpenEnumSchema } from "@/schemas/open-enum";
 import { ExtensibleZodIssueBaseSchema } from "@/schemas/zod/issue/base";
 import { ZOD_ISSUE_CODE_ENUM } from "@/schemas/zod/issue/code";
-import { ZodStringFormatSchema } from "@/schemas/zod/string-formats";
+import { ZodStringFormatSchema } from "@/schemas/zod/string-format";
 
 export const ZodIssueInvalidStringFormatSchema =
   ExtensibleZodIssueBaseSchema.safeExtend({
