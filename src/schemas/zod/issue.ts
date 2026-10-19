@@ -40,7 +40,7 @@ export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   input: ZodIssueInputSchema,
   path: ZodIssuePathSchema,
   message: ZodIssueMessageSchema,
-  get errors(): z.ZodArray<z.ZodArray<typeof ZodIssueSchema>> {
+  get errors() {
     return z.array(z.array(ZodIssueSchema));
   },
   discriminator: z.string().optional(),
