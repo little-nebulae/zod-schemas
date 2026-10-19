@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { OpenEnumSchema } from "@/schemas/open-enum";
 import { PrimitiveSchema } from "@/schemas/primitive";
 import { PropertyKeySchema } from "@/schemas/property-key";
 import { NonEmptyStringSchema } from "@/schemas/string/non-empty";
@@ -35,6 +36,35 @@ export const ZodIssueBaseSchema = z.object({
   message: ZodIssueMessageSchema,
 });
 
+export const ZOD_INVALID_TYPE_EXPECTED_ENUM = {
+  STRING: "string",
+  NUMBER: "number",
+  INT: "int",
+  BOOLEAN: "boolean",
+  BIGINT: "bigint",
+  SYMBOL: "symbol",
+  UNDEFINED: "undefined",
+  NULL: "null",
+  NEVER: "never",
+  VOID: "void",
+  DATE: "date",
+  ARRAY: "array",
+  OBJECT: "object",
+  TUPLE: "tuple",
+  RECORD: "record",
+  MAP: "map",
+  SET: "set",
+  FILE: "file",
+  NONOPTIONAL: "nonoptional",
+  NAN: "nan",
+  FUNCTION: "function",
+} as const;
+
+export const ZodIssueInvalidTypeSchema = ZodIssueBaseSchema.safeExtend({
+  code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_TYPE),
+  expected: OpenEnumSchema(z.enum(ZOD_INVALID_TYPE_EXPECTED_ENUM)),
+});
+
 export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
   input: ZodIssueInputSchema,
@@ -68,6 +98,7 @@ export const ZodIssueCustomSchema = ZodIssueBaseSchema.safeExtend({
 });
 
 export const ZodIssueSchema = z.discriminatedUnion(ZOD_ISSUE_CODE_KEY, [
+  ZodIssueInvalidTypeSchema,
   ...ZodIssueInvalidUnionSchema.options,
   ZodIssueCustomSchema,
 ]);
