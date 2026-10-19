@@ -25,25 +25,29 @@ test("The type of ZOD_ISSUE_CODE_ENUM's values should be equal to $ZodIssueCode"
 });
 
 test("When wrapped with Readonly, the inferred type of ZodIssueBaseSchema should be equal to $ZodIssueBase", () => {
-  type Inferred = z.infer<typeof ZodIssueBaseSchema>;
-  expectTypeOf<Inferred>().not.toEqualTypeOf<$ZodIssueBase>();
-  expectTypeOf<Readonly<Inferred>>().toEqualTypeOf<$ZodIssueBase>();
+  type Actual = z.infer<typeof ZodIssueBaseSchema>;
+  type Expected = $ZodIssueBase;
+  expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+  expectTypeOf<Readonly<Actual>>().toEqualTypeOf<Expected>();
 });
 
 test("When wrapped with Readonly, the inferred type of ZodIssueInvalidTypeSchema should be equal to $ZodIssueInvalidType", () => {
-  type Inferred = z.infer<typeof ZodIssueInvalidTypeSchema>;
-  expectTypeOf<Inferred>().not.toEqualTypeOf<$ZodIssueInvalidType>();
-  expectTypeOf<Readonly<Inferred>>().toEqualTypeOf<$ZodIssueInvalidType>();
+  type Actual = z.infer<typeof ZodIssueInvalidTypeSchema>;
+  type Expected = $ZodIssueInvalidType;
+  expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+  expectTypeOf<Readonly<Actual>>().toEqualTypeOf<Expected>();
 });
 
 test("When wrapped with Readonly, the inferred type of ZodIssueTooBigSchema should be equal to $ZodIssueTooBig", () => {
-  type Inferred = z.infer<typeof ZodIssueTooBigSchema>;
-  expectTypeOf<Inferred>().not.toEqualTypeOf<$ZodIssueTooBig>();
-  expectTypeOf<Readonly<Inferred>>().toEqualTypeOf<$ZodIssueTooBig>();
+  type Actual = z.infer<typeof ZodIssueTooBigSchema>;
+  type Expected = $ZodIssueTooBig;
+  expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+  expectTypeOf<Readonly<Actual>>().toEqualTypeOf<Expected>();
 });
 
 test("When wrapped with Readonly, the inferred type of ZodIssueTooSmallSchema should be equal to $ZodIssueTooSmall", () => {
-  type Inferred = z.infer<typeof ZodIssueTooSmallSchema>;
-  expectTypeOf<Inferred>().not.toEqualTypeOf<$ZodIssueTooSmall>();
-  expectTypeOf<Readonly<Inferred>>().toEqualTypeOf<$ZodIssueTooSmall>();
+  type Actual = z.infer<typeof ZodIssueTooSmallSchema>;
+  type Expected = $ZodIssueTooSmall;
+  expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+  expectTypeOf<Readonly<Actual>>().toEqualTypeOf<Expected>();
 });
