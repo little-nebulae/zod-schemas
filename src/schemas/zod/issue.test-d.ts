@@ -1,12 +1,17 @@
 import type { ValueOf } from "type-fest";
 import type { z } from "zod";
-import type { $ZodIssueBase, $ZodIssueCode } from "zod/v4/core";
+import type {
+  $ZodIssueBase,
+  $ZodIssueCode,
+  $ZodIssueInvalidType,
+} from "zod/v4/core";
 
 import { expectTypeOf, test } from "vitest";
 
 import type {
   ZOD_ISSUE_CODE_ENUM,
   ZodIssueBaseSchema,
+  ZodIssueInvalidTypeSchema,
 } from "@/schemas/zod/issue";
 
 test("The type of ZOD_ISSUE_CODE_ENUM's values should be equal to $ZodIssueCode", () => {
@@ -19,4 +24,10 @@ test("When wrapped with Readonly, the inferred type of ZodIssueBaseSchema should
   type Inferred = z.infer<typeof ZodIssueBaseSchema>;
   expectTypeOf<Inferred>().not.toEqualTypeOf<$ZodIssueBase>();
   expectTypeOf<Readonly<Inferred>>().toEqualTypeOf<$ZodIssueBase>();
+});
+
+test("When wrapped with Readonly, the inferred type of ZodIssueInvalidTypeSchema should be equal to $ZodIssueInvalidType", () => {
+  type Inferred = z.infer<typeof ZodIssueInvalidTypeSchema>;
+  expectTypeOf<Inferred>().not.toEqualTypeOf<$ZodIssueInvalidType>();
+  expectTypeOf<Readonly<Inferred>>().toEqualTypeOf<$ZodIssueInvalidType>();
 });
