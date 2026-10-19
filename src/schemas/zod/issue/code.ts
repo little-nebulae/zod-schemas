@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+export const ZOD_ISSUE_CODE_KEY = "code";
 export const ZOD_ISSUE_CODE_ENUM = {
   INVALID_TYPE: "invalid_type",
   TOO_BIG: "too_big",

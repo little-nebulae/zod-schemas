@@ -1,9 +1,10 @@
 import { z } from "zod";
 
 import { PropertyKeySchema } from "@/schemas/property-key";
+import { ZOD_ISSUE_CODE_KEY } from "@/schemas/zod/issue/code";
 
 export const ExtensibleZodIssueBaseSchema = z.object({
-  code: z.string().exactOptional(),
+  [ZOD_ISSUE_CODE_KEY]: z.string().exactOptional(),
   input: z.unknown().exactOptional(),
   path: z.array(PropertyKeySchema),
   message: z.string(),
