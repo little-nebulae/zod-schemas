@@ -65,6 +65,30 @@ export const ZodIssueInvalidTypeSchema = z.object({
   expected: OpenEnumSchema(z.enum(ZOD_INVALID_TYPE_EXPECTED_ENUM)),
 });
 
+export const ZOD_BOUND_ORIGIN_ENUM = {
+  NUMBER: "number",
+  INT: "int",
+  BIGINT: "bigint",
+  DATE: "date",
+  STRING: "string",
+  ARRAY: "array",
+  SET: "set",
+  FILE: "file",
+} as const;
+
+export const ZodBoundOriginSchema = OpenEnumSchema(
+  z.enum(ZOD_BOUND_ORIGIN_ENUM),
+);
+
+export const ZodIssueTooBigSchema = z.object({
+  ...ZodIssueBaseSchema.shape,
+  code: z.literal(ZOD_ISSUE_CODE_ENUM.TOO_BIG),
+  origin: ZodBoundOriginSchema,
+  maximum: z.union([z.number(), z.bigint()]),
+  inclusive: z.boolean().exactOptional(),
+  exact: z.boolean().exactOptional(),
+});
+
 export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
   input: ZodIssueInputSchema,
@@ -100,6 +124,7 @@ export const ZodIssueCustomSchema = z.object({
 
 export const ZodIssueSchema = z.discriminatedUnion(ZOD_ISSUE_CODE_KEY, [
   ZodIssueInvalidTypeSchema,
+  ZodIssueTooBigSchema,
   ...ZodIssueInvalidUnionSchema.options,
   ZodIssueCustomSchema,
 ]);
