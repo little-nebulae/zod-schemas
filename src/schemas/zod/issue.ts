@@ -159,6 +159,18 @@ export const ZodIssueInvalidKey = z.object({
   },
 });
 
+export const ZodIssueInvalidElement = z.object({
+  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_ELEMENT),
+  input: ZodIssueInputSchema,
+  path: ZodIssuePathSchema,
+  message: ZodIssueMessageSchema,
+  origin: z.enum(["map", "set"]),
+  key: z.unknown(),
+  get issues() {
+    return z.array(ZodIssueSchema);
+  },
+});
+
 export const ZodIssueCustomSchema = z.object({
   ...ZodIssueBaseSchema.shape,
   [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.CUSTOM),
@@ -173,6 +185,7 @@ export const ZodIssueSchema = z.discriminatedUnion(ZOD_ISSUE_CODE_KEY, [
   ZodIssueNotMultipleOfSchema,
   ZodIssueUnrecognizedKeysSchema,
   ZodIssueInvalidKey,
+  ZodIssueInvalidElement,
   ...ZodIssueInvalidUnionSchema.options,
   ZodIssueCustomSchema,
 ]);
