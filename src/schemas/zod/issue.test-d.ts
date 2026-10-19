@@ -5,6 +5,7 @@ import type {
   $ZodIssueCode,
   $ZodIssueInvalidType,
   $ZodIssueTooBig,
+  $ZodIssueTooSmall,
 } from "zod/v4/core";
 
 import { expectTypeOf, test } from "vitest";
@@ -14,6 +15,7 @@ import type {
   ZodIssueBaseSchema,
   ZodIssueInvalidTypeSchema,
   ZodIssueTooBigSchema,
+  ZodIssueTooSmallSchema,
 } from "@/schemas/zod/issue";
 
 test("The type of ZOD_ISSUE_CODE_ENUM's values should be equal to $ZodIssueCode", () => {
@@ -38,4 +40,10 @@ test("When wrapped with Readonly, the inferred type of ZodIssueTooBigSchema shou
   type Inferred = z.infer<typeof ZodIssueTooBigSchema>;
   expectTypeOf<Inferred>().not.toEqualTypeOf<$ZodIssueTooBig>();
   expectTypeOf<Readonly<Inferred>>().toEqualTypeOf<$ZodIssueTooBig>();
+});
+
+test("When wrapped with Readonly, the inferred type of ZodIssueTooSmallSchema should be equal to $ZodIssueTooSmall", () => {
+  type Inferred = z.infer<typeof ZodIssueTooSmallSchema>;
+  expectTypeOf<Inferred>().not.toEqualTypeOf<$ZodIssueTooSmall>();
+  expectTypeOf<Readonly<Inferred>>().toEqualTypeOf<$ZodIssueTooSmall>();
 });
