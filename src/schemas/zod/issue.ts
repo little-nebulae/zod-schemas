@@ -114,6 +114,13 @@ export const ZodIssueNotMultipleOfSchema = z.object({
   divisor: z.number(),
 });
 
+export const ZodIssueUnrecognizedKeysSchema = z.object({
+  ...ZodIssueBaseSchema.shape,
+  code: z.literal(ZOD_ISSUE_CODE_ENUM.UNRECOGNIZED_KEYS),
+  input: z.record(z.string(), z.unknown()).exactOptional(),
+  keys: z.array(z.string()),
+});
+
 export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
   input: ZodIssueInputSchema,
@@ -153,6 +160,7 @@ export const ZodIssueSchema = z.discriminatedUnion(ZOD_ISSUE_CODE_KEY, [
   ZodIssueTooSmallSchema,
   ZodIssueInvalidStringFormatSchema,
   ZodIssueNotMultipleOfSchema,
+  ZodIssueUnrecognizedKeysSchema,
   ...ZodIssueInvalidUnionSchema.options,
   ZodIssueCustomSchema,
 ]);
