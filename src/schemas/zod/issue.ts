@@ -3,7 +3,6 @@ import { z } from "zod";
 import { OpenEnumSchema } from "@/schemas/open-enum";
 import { PrimitiveSchema } from "@/schemas/primitive";
 import { PropertyKeySchema } from "@/schemas/property-key";
-import { NonEmptyStringSchema } from "@/schemas/string/non-empty";
 
 export const ZOD_ISSUE_CODE_KEY = "code";
 
@@ -27,7 +26,7 @@ export const ZodIssueInputSchema = z.unknown().exactOptional();
 
 export const ZodIssuePathSchema = z.array(PropertyKeySchema);
 
-export const ZodIssueMessageSchema = NonEmptyStringSchema;
+export const ZodIssueMessageSchema = z.string();
 
 export const ZodIssueBaseSchema = z.object({
   [ZOD_ISSUE_CODE_KEY]: z.string().exactOptional(),
@@ -60,7 +59,8 @@ export const ZOD_INVALID_TYPE_EXPECTED_ENUM = {
   FUNCTION: "function",
 } as const;
 
-export const ZodIssueInvalidTypeSchema = ZodIssueBaseSchema.safeExtend({
+export const ZodIssueInvalidTypeSchema = z.object({
+  ...ZodIssueBaseSchema.shape,
   code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_TYPE),
   expected: OpenEnumSchema(z.enum(ZOD_INVALID_TYPE_EXPECTED_ENUM)),
 });
@@ -78,21 +78,22 @@ export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   inclusive: z.literal(true).exactOptional(),
 });
 
-export const ZodIssueInvalidUnionMultipleMatchSchema =
-  ZodIssueBaseSchema.safeExtend({
-    code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
-    errors: z.tuple([]),
-    discriminator: z.string().optional(),
-    inclusive: z.literal(false),
-    matches: z.array(z.number()),
-  });
+export const ZodIssueInvalidUnionMultipleMatchSchema = z.object({
+  ...ZodIssueBaseSchema.shape,
+  code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
+  errors: z.tuple([]),
+  discriminator: z.string().optional(),
+  inclusive: z.literal(false),
+  matches: z.array(z.number()),
+});
 
 export const ZodIssueInvalidUnionSchema = z.union([
   ZodIssueInvalidUnionNoMatchSchema,
   ZodIssueInvalidUnionMultipleMatchSchema,
 ]);
 
-export const ZodIssueCustomSchema = ZodIssueBaseSchema.safeExtend({
+export const ZodIssueCustomSchema = z.object({
+  ...ZodIssueBaseSchema.shape,
   code: z.literal(ZOD_ISSUE_CODE_ENUM.CUSTOM),
   params: z.record(z.string(), z.any()).optional(),
 });
