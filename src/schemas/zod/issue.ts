@@ -21,8 +21,6 @@ export const ZOD_ISSUE_CODE_ENUM = {
   CUSTOM: "custom",
 } as const;
 
-export const ZodIssueCodeSchema = z.enum(ZOD_ISSUE_CODE_ENUM);
-
 export const ZodIssueInputSchema = z.unknown().exactOptional();
 
 export const ZodIssuePathSchema = z.array(PropertyKeySchema);
