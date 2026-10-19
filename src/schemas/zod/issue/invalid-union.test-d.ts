@@ -1,4 +1,4 @@
-import type { Except } from "type-fest";
+import type { Except, Simplify } from "type-fest";
 import type { $ZodIssueInvalidUnion } from "zod/v4/core";
 
 import { expectTypeOf, test } from "vitest";
@@ -21,6 +21,12 @@ test("ZodIssueInvalidUnionNoMatch type should be equal to $ZodIssueInvalidUnionN
   expectTypeOf<Except<ZodIssueInvalidUnionNoMatch, "errors">>().toEqualTypeOf<
     Except<$ZodIssueInvalidUnionNoMatch, "errors">
   >();
+});
+
+test("$ZodIssueInvalidUnionNoMatch type's errors property's members should extend ZodIssueInvalidUnionNoMatch type's errors property's members", () => {
+  expectTypeOf<
+    Simplify<$ZodIssueInvalidUnionNoMatch["errors"][number][number]>
+  >().toExtend<ZodIssueInvalidUnionNoMatch["errors"][number][number]>();
 });
 
 test("ZodIssueInvalidUnionMultipleMatch type should be equal to $ZodIssueInvalidUnionMultipleMatch type", () => {
