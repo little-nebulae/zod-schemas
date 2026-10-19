@@ -89,6 +89,15 @@ export const ZodIssueTooBigSchema = z.object({
   exact: z.boolean().exactOptional(),
 });
 
+export const ZodIssueTooSmallSchema = z.object({
+  ...ZodIssueBaseSchema.shape,
+  code: z.literal(ZOD_ISSUE_CODE_ENUM.TOO_SMALL),
+  origin: ZodBoundOriginSchema,
+  minimum: z.union([z.number(), z.bigint()]),
+  inclusive: z.boolean().exactOptional(),
+  exact: z.boolean().exactOptional(),
+});
+
 export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
   input: ZodIssueInputSchema,
@@ -125,6 +134,7 @@ export const ZodIssueCustomSchema = z.object({
 export const ZodIssueSchema = z.discriminatedUnion(ZOD_ISSUE_CODE_KEY, [
   ZodIssueInvalidTypeSchema,
   ZodIssueTooBigSchema,
+  ZodIssueTooSmallSchema,
   ...ZodIssueInvalidUnionSchema.options,
   ZodIssueCustomSchema,
 ]);
