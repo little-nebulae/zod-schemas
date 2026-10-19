@@ -11,7 +11,7 @@ export const ZodIssueInvalidUnionNoMatchSchema =
       z.array(z.looseObject(ExtensibleZodIssueBaseSchema.shape).readonly()),
     ),
     discriminator: z.string().optional(),
-    options: z.array(PrimitiveSchema),
+    options: z.array(PrimitiveSchema).exactOptional(),
     inclusive: z.literal(true).exactOptional(),
   }).readonly();
 export type ZodIssueInvalidUnionNoMatch = z.infer<
