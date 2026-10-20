@@ -7,6 +7,7 @@ import type {
   $ZodIssueNotMultipleOf,
   $ZodIssueTooBig,
   $ZodIssueTooSmall,
+  $ZodIssueUnrecognizedKeys,
 } from "zod/v4/core";
 
 import { expectTypeOf, test } from "vitest";
@@ -18,6 +19,7 @@ import type {
   ZodIssueNotMultipleOfSchema,
   ZodIssueTooBigSchema,
   ZodIssueTooSmallSchema,
+  ZodIssueUnrecognizedKeysSchema,
 } from "@/schemas/zod/issue";
 
 test("The type of ZOD_ISSUE_CODE_ENUM's values should be equal to $ZodIssueCode", () => {
@@ -54,4 +56,10 @@ test("The inferred type of ZodIssueNotMultipleOfSchema should be equal to $ZodIs
   expectTypeOf<
     z.infer<typeof ZodIssueNotMultipleOfSchema>
   >().toEqualTypeOf<$ZodIssueNotMultipleOf>();
+});
+
+test("The inferred type of ZodIssueUnrecognizedKeysSchema should be equal to $ZodIssueUnrecognizedKeys", () => {
+  expectTypeOf<
+    z.infer<typeof ZodIssueUnrecognizedKeysSchema>
+  >().toEqualTypeOf<$ZodIssueUnrecognizedKeys>();
 });
