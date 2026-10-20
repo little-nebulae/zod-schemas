@@ -17,6 +17,7 @@ import type {
   ZOD_ISSUE_CODE_ENUM,
   ZodIssueInvalidStringFormatSchema,
   ZodIssueInvalidTypeSchema,
+  ZodIssueInvalidUnionMultipleMatchSchema,
   ZodIssueNotMultipleOfSchema,
   ZodIssueTooBigSchema,
   ZodIssueTooSmallSchema,
@@ -74,3 +75,9 @@ type $ZodIssueInvalidUnionMultipleMatch = ExtractStrict<
   $ZodIssueInvalidUnion,
   $ZodIssueInvalidUnionDiscriminator
 >;
+
+test("The inferred type of ZodIssueInvalidUnionMultipleMatchSchema should be equal to $ZodIssueInvalidUnionMultipleMatch", () => {
+  expectTypeOf<
+    z.infer<typeof ZodIssueInvalidUnionMultipleMatchSchema>
+  >().toEqualTypeOf<$ZodIssueInvalidUnionMultipleMatch>();
+});
