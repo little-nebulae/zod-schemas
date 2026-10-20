@@ -1,9 +1,10 @@
-import type { ValueOf } from "type-fest";
+import type { ExcludeStrict, ExtractStrict, ValueOf } from "type-fest";
 import type { z } from "zod";
 import type {
   $ZodIssueCode,
   $ZodIssueInvalidStringFormat,
   $ZodIssueInvalidType,
+  $ZodIssueInvalidUnion,
   $ZodIssueNotMultipleOf,
   $ZodIssueTooBig,
   $ZodIssueTooSmall,
@@ -63,3 +64,13 @@ test("The inferred type of ZodIssueUnrecognizedKeysSchema should be equal to $Zo
     z.infer<typeof ZodIssueUnrecognizedKeysSchema>
   >().toEqualTypeOf<$ZodIssueUnrecognizedKeys>();
 });
+
+type $ZodIssueInvalidUnionDiscriminator = { inclusive: false };
+type $ZodIssueInvalidUnionNoMatch = ExcludeStrict<
+  $ZodIssueInvalidUnion,
+  $ZodIssueInvalidUnionDiscriminator
+>;
+type $ZodIssueInvalidUnionMultipleMatch = ExtractStrict<
+  $ZodIssueInvalidUnion,
+  $ZodIssueInvalidUnionDiscriminator
+>;
