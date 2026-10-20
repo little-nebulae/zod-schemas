@@ -2,6 +2,7 @@ import type { ExcludeStrict, ExtractStrict, ValueOf } from "type-fest";
 import type { z } from "zod";
 import type {
   $ZodIssueCode,
+  $ZodIssueCustom,
   $ZodIssueInvalidStringFormat,
   $ZodIssueInvalidType,
   $ZodIssueInvalidUnion,
@@ -16,6 +17,7 @@ import { expectTypeOf, test } from "vitest";
 
 import type {
   ZOD_ISSUE_CODE_ENUM,
+  ZodIssueCustomSchema,
   ZodIssueInvalidStringFormatSchema,
   ZodIssueInvalidTypeSchema,
   ZodIssueInvalidUnionMultipleMatchSchema,
@@ -88,4 +90,10 @@ test("The inferred type of ZodIssueInvalidValueSchema should be equal to $ZodIss
   expectTypeOf<
     z.infer<typeof ZodIssueInvalidValueSchema>
   >().toEqualTypeOf<$ZodIssueInvalidValue>();
+});
+
+test("The inferred type of ZodIssueCustomSchema should be equal to $ZodIssueCustom", () => {
+  expectTypeOf<
+    z.infer<typeof ZodIssueCustomSchema>
+  >().toEqualTypeOf<$ZodIssueCustom>();
 });
