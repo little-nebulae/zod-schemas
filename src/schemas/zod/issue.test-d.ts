@@ -2,6 +2,7 @@ import type { ValueOf } from "type-fest";
 import type { z } from "zod";
 import type {
   $ZodIssueCode,
+  $ZodIssueInvalidStringFormat,
   $ZodIssueInvalidType,
   $ZodIssueTooBig,
   $ZodIssueTooSmall,
@@ -11,6 +12,7 @@ import { expectTypeOf, test } from "vitest";
 
 import type {
   ZOD_ISSUE_CODE_ENUM,
+  ZodIssueInvalidStringFormatSchema,
   ZodIssueInvalidTypeSchema,
   ZodIssueTooBigSchema,
   ZodIssueTooSmallSchema,
@@ -38,4 +40,10 @@ test("The inferred type of ZodIssueTooSmallSchema should be equal to $ZodIssueTo
   expectTypeOf<
     z.infer<typeof ZodIssueTooSmallSchema>
   >().toEqualTypeOf<$ZodIssueTooSmall>();
+});
+
+test("The inferred type of ZodIssueInvalidStringFormatSchema should be equal to $ZodIssueTooSmall", () => {
+  expectTypeOf<
+    z.infer<typeof ZodIssueInvalidStringFormatSchema>
+  >().toEqualTypeOf<$ZodIssueInvalidStringFormat>();
 });
