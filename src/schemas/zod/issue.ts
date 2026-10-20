@@ -160,7 +160,7 @@ export const ZodIssueInvalidUnionSchema = z.union([
   ZodIssueInvalidUnionMultipleMatchSchema,
 ]);
 
-export const ZodIssueInvalidKey = z.object({
+export const ZodIssueInvalidKeySchema = z.object({
   [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_KEY),
   input: ZodIssueInputSchema,
   path: ZodIssuePathSchema,
@@ -171,7 +171,7 @@ export const ZodIssueInvalidKey = z.object({
   },
 });
 
-export const ZodIssueInvalidElement = z.object({
+export const ZodIssueInvalidElementSchema = z.object({
   [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_ELEMENT),
   input: ZodIssueInputSchema,
   path: ZodIssuePathSchema,
@@ -207,8 +207,8 @@ export const ZodIssueSchema = z.discriminatedUnion(ZOD_ISSUE_CODE_KEY, [
   ZodIssueNotMultipleOfSchema,
   ZodIssueUnrecognizedKeysSchema,
   ...ZodIssueInvalidUnionSchema.options,
-  ZodIssueInvalidKey,
-  ZodIssueInvalidElement,
+  ZodIssueInvalidKeySchema,
+  ZodIssueInvalidElementSchema,
   ZodIssueInvalidValueSchema,
   ZodIssueCustomSchema,
 ]);
