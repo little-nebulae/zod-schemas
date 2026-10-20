@@ -4,6 +4,7 @@ import type {
   $ZodIssueCode,
   $ZodIssueInvalidStringFormat,
   $ZodIssueInvalidType,
+  $ZodIssueNotMultipleOf,
   $ZodIssueTooBig,
   $ZodIssueTooSmall,
 } from "zod/v4/core";
@@ -14,6 +15,7 @@ import type {
   ZOD_ISSUE_CODE_ENUM,
   ZodIssueInvalidStringFormatSchema,
   ZodIssueInvalidTypeSchema,
+  ZodIssueNotMultipleOfSchema,
   ZodIssueTooBigSchema,
   ZodIssueTooSmallSchema,
 } from "@/schemas/zod/issue";
@@ -46,4 +48,10 @@ test("The inferred type of ZodIssueInvalidStringFormatSchema should be equal to 
   expectTypeOf<
     z.infer<typeof ZodIssueInvalidStringFormatSchema>
   >().toEqualTypeOf<$ZodIssueInvalidStringFormat>();
+});
+
+test("The inferred type of ZodIssueNotMultipleOfSchema should be equal to $ZodIssueNotMultipleOf", () => {
+  expectTypeOf<
+    z.infer<typeof ZodIssueNotMultipleOfSchema>
+  >().toEqualTypeOf<$ZodIssueNotMultipleOf>();
 });
