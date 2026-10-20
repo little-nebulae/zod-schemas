@@ -361,3 +361,4 @@ export const ZodIssueSchema = z.discriminatedUnion(ZOD_ISSUE_CODE_KEY, [
   ZodIssueInvalidValueSchema,
   ZodIssueCustomSchema,
 ]);
+export type ZodIssue = z.infer<typeof ZodIssueSchema>;
