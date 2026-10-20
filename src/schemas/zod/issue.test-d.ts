@@ -3,6 +3,7 @@ import type { z } from "zod";
 import type {
   $ZodIssueCode,
   $ZodIssueCustom,
+  $ZodIssueInvalidElement,
   $ZodIssueInvalidKey,
   $ZodIssueInvalidStringFormat,
   $ZodIssueInvalidType,
@@ -19,6 +20,7 @@ import { expectTypeOf, test } from "vitest";
 import type {
   ZOD_ISSUE_CODE_ENUM,
   ZodIssueCustomSchema,
+  ZodIssueInvalidElementSchema,
   ZodIssueInvalidKeySchema,
   ZodIssueInvalidStringFormatSchema,
   ZodIssueInvalidTypeSchema,
@@ -102,6 +104,16 @@ test("The inferred type of ZodIssueInvalidUnionMultipleMatchSchema should be equ
 test("The inferred type of ZodIssueInvalidKeySchema should be equal to $ZodIssueInvalidUnionNoMatch when the issues property is ignored and the resulting type is wrapped with Readonly", () => {
   type Actual = z.infer<typeof ZodIssueInvalidKeySchema>;
   type Expected = $ZodIssueInvalidKey;
+  type MismatchProperty = "issues";
+  expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+  expectTypeOf<Readonly<Except<Actual, MismatchProperty>>>().toEqualTypeOf<
+    Except<Expected, MismatchProperty>
+  >();
+});
+
+test("The inferred type of ZodIssueInvalidElementSchema should be equal to $ZodIssueInvalidElement when the issues property is ignored and the resulting type is wrapped with Readonly", () => {
+  type Actual = z.infer<typeof ZodIssueInvalidElementSchema>;
+  type Expected = $ZodIssueInvalidElement;
   type MismatchProperty = "issues";
   expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
   expectTypeOf<Readonly<Except<Actual, MismatchProperty>>>().toEqualTypeOf<
