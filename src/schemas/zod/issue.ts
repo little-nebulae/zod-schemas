@@ -106,7 +106,7 @@ export const ZOD_INVALID_TYPE_EXPECTED_ENUM = {
 export const ZodIssueInvalidTypeSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
-    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_TYPE),
+    code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_TYPE),
     expected: OpenEnumSchema(z.enum(ZOD_INVALID_TYPE_EXPECTED_ENUM)),
   })
   .readonly();
@@ -136,7 +136,7 @@ export const ZodBoundOriginSchema = OpenEnumSchema(
 export const ZodIssueTooBigSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
-    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.TOO_BIG),
+    code: z.literal(ZOD_ISSUE_CODE_ENUM.TOO_BIG),
     origin: ZodBoundOriginSchema,
     maximum: z.union([z.number(), z.bigint()]),
     inclusive: z.boolean().exactOptional(),
@@ -148,7 +148,7 @@ export const ZodIssueTooBigSchema = z
 export const ZodIssueTooSmallSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
-    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.TOO_SMALL),
+    code: z.literal(ZOD_ISSUE_CODE_ENUM.TOO_SMALL),
     origin: ZodBoundOriginSchema,
     minimum: z.union([z.number(), z.bigint()]),
     inclusive: z.boolean().exactOptional(),
@@ -169,7 +169,7 @@ export const ZodIssueTooSmallSchema = z
 export const ZodIssueInvalidStringFormatSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
-    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_FORMAT),
+    code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_FORMAT),
     input: z.string().exactOptional(),
     format: OpenEnumSchema(ZodStringFormatSchema),
     pattern: z.string().exactOptional(),
@@ -184,7 +184,7 @@ export const ZodIssueInvalidStringFormatSchema = z
 export const ZodIssueNotMultipleOfSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
-    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.NOT_MULTIPLE_OF),
+    code: z.literal(ZOD_ISSUE_CODE_ENUM.NOT_MULTIPLE_OF),
     input: z.union([z.number(), z.bigint()]).exactOptional(),
     divisor: z.number(),
   })
@@ -197,7 +197,7 @@ export const ZodIssueNotMultipleOfSchema = z
 export const ZodIssueInvalidValueSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
-    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_VALUE),
+    code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_VALUE),
     values: z.array(PrimitiveSchema),
   })
   .readonly();
@@ -215,7 +215,7 @@ export const ZodIssueInvalidValueSchema = z
 export const ZodIssueUnrecognizedKeysSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
-    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.UNRECOGNIZED_KEYS),
+    code: z.literal(ZOD_ISSUE_CODE_ENUM.UNRECOGNIZED_KEYS),
     input: z.record(z.string(), z.unknown()).exactOptional(),
     keys: z.array(z.string()),
   })
@@ -238,7 +238,7 @@ export const ZOD_ISSUE_INVALID_UNION_INCLUSIVE_KEY = "inclusive";
  * spread {@link ZodIssueBaseSchema} and is not chained with `.readonly()`.
  */
 export const ZodIssueInvalidUnionNoMatchSchema = z.object({
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
+  code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
   input: ZodIssueInputSchema,
   path: ZodIssuePathSchema,
   message: ZodIssueMessageSchema,
@@ -259,7 +259,7 @@ export const ZodIssueInvalidUnionNoMatchSchema = z.object({
 export const ZodIssueInvalidUnionMultipleMatchSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
-    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
+    code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
     errors: z.tuple([]),
     discriminator: z.string().optional(),
     [ZOD_ISSUE_INVALID_UNION_INCLUSIVE_KEY]: z.literal(false),
@@ -291,7 +291,7 @@ export const ZodIssueInvalidUnionSchema = z.discriminatedUnion(
  * spread {@link ZodIssueBaseSchema} and is not chained with `.readonly()`.
  */
 export const ZodIssueInvalidKeySchema = z.object({
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_KEY),
+  code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_KEY),
   input: ZodIssueInputSchema,
   path: ZodIssuePathSchema,
   message: ZodIssueMessageSchema,
@@ -312,7 +312,7 @@ export const ZodIssueInvalidKeySchema = z.object({
  * spread {@link ZodIssueBaseSchema} and is not chained with `.readonly()`.
  */
 export const ZodIssueInvalidElementSchema = z.object({
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_ELEMENT),
+  code: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_ELEMENT),
   input: ZodIssueInputSchema,
   path: ZodIssuePathSchema,
   message: ZodIssueMessageSchema,
@@ -334,7 +334,7 @@ export const ZodIssueInvalidElementSchema = z.object({
 export const ZodIssueCustomSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
-    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.CUSTOM),
+    code: z.literal(ZOD_ISSUE_CODE_ENUM.CUSTOM),
     params: z.record(z.string(), z.any()).optional(),
   })
   .readonly();
