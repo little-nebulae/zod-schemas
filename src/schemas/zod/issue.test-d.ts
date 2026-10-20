@@ -5,6 +5,7 @@ import type {
   $ZodIssueInvalidStringFormat,
   $ZodIssueInvalidType,
   $ZodIssueInvalidUnion,
+  $ZodIssueInvalidValue,
   $ZodIssueNotMultipleOf,
   $ZodIssueTooBig,
   $ZodIssueTooSmall,
@@ -18,6 +19,7 @@ import type {
   ZodIssueInvalidStringFormatSchema,
   ZodIssueInvalidTypeSchema,
   ZodIssueInvalidUnionMultipleMatchSchema,
+  ZodIssueInvalidValueSchema,
   ZodIssueNotMultipleOfSchema,
   ZodIssueTooBigSchema,
   ZodIssueTooSmallSchema,
@@ -80,4 +82,10 @@ test("The inferred type of ZodIssueInvalidUnionMultipleMatchSchema should be equ
   expectTypeOf<
     z.infer<typeof ZodIssueInvalidUnionMultipleMatchSchema>
   >().toEqualTypeOf<$ZodIssueInvalidUnionMultipleMatch>();
+});
+
+test("The inferred type of ZodIssueInvalidValueSchema should be equal to $ZodIssueInvalidValue", () => {
+  expectTypeOf<
+    z.infer<typeof ZodIssueInvalidValueSchema>
+  >().toEqualTypeOf<$ZodIssueInvalidValue>();
 });
