@@ -131,6 +131,8 @@ export const ZodIssueUnrecognizedKeysSchema = z
   })
   .readonly();
 
+export const ZOD_ISSUE_INVALID_UNION_INCLUSIVE_KEY = "inclusive";
+
 export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
   input: ZodIssueInputSchema,
@@ -141,7 +143,7 @@ export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   },
   discriminator: z.string().optional(),
   options: z.array(PrimitiveSchema).exactOptional(),
-  inclusive: z.literal(true).exactOptional(),
+  [ZOD_ISSUE_INVALID_UNION_INCLUSIVE_KEY]: z.literal(true).exactOptional(),
 });
 
 export const ZodIssueInvalidUnionMultipleMatchSchema = z
@@ -150,15 +152,15 @@ export const ZodIssueInvalidUnionMultipleMatchSchema = z
     [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
     errors: z.tuple([]),
     discriminator: z.string().optional(),
-    inclusive: z.literal(false),
+    [ZOD_ISSUE_INVALID_UNION_INCLUSIVE_KEY]: z.literal(false),
     matches: z.array(z.number()),
   })
   .readonly();
 
-export const ZodIssueInvalidUnionSchema = z.discriminatedUnion("inclusive", [
-  ZodIssueInvalidUnionNoMatchSchema,
-  ZodIssueInvalidUnionMultipleMatchSchema,
-]);
+export const ZodIssueInvalidUnionSchema = z.discriminatedUnion(
+  ZOD_ISSUE_INVALID_UNION_INCLUSIVE_KEY,
+  [ZodIssueInvalidUnionNoMatchSchema, ZodIssueInvalidUnionMultipleMatchSchema],
+);
 
 export const ZodIssueInvalidKeySchema = z.object({
   [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_KEY),
