@@ -1,4 +1,4 @@
-import type { ExcludeStrict, ExtractStrict, ValueOf } from "type-fest";
+import type { Except, ExcludeStrict, ExtractStrict, ValueOf } from "type-fest";
 import type { z } from "zod";
 import type {
   $ZodIssueCode,
@@ -21,6 +21,7 @@ import type {
   ZodIssueInvalidStringFormatSchema,
   ZodIssueInvalidTypeSchema,
   ZodIssueInvalidUnionMultipleMatchSchema,
+  ZodIssueInvalidUnionNoMatchSchema,
   ZodIssueInvalidValueSchema,
   ZodIssueNotMultipleOfSchema,
   ZodIssueTooBigSchema,
@@ -79,6 +80,15 @@ type $ZodIssueInvalidUnionMultipleMatch = ExtractStrict<
   $ZodIssueInvalidUnion,
   $ZodIssueInvalidUnionDiscriminator
 >;
+
+test("The inferred type of ZodIssueInvalidUnionNoMatchSchema should be equal to $ZodIssueInvalidUnionNoMatch when the errors property is ignored and the resulting type is wrapped with Readonly", () => {
+  type Actual = z.infer<typeof ZodIssueInvalidUnionNoMatchSchema>;
+  type Expected = $ZodIssueInvalidUnionNoMatch;
+  expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
+  expectTypeOf<Readonly<Except<Actual, "errors">>>().toEqualTypeOf<
+    Except<Expected, "errors">
+  >();
+});
 
 test("The inferred type of ZodIssueInvalidUnionMultipleMatchSchema should be equal to $ZodIssueInvalidUnionMultipleMatch", () => {
   expectTypeOf<
