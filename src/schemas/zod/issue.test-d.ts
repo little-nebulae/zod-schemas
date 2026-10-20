@@ -42,7 +42,7 @@ test("The inferred type of ZodIssueTooSmallSchema should be equal to $ZodIssueTo
   >().toEqualTypeOf<$ZodIssueTooSmall>();
 });
 
-test("The inferred type of ZodIssueInvalidStringFormatSchema should be equal to $ZodIssueTooSmall", () => {
+test("The inferred type of ZodIssueInvalidStringFormatSchema should be equal to $ZodIssueInvalidStringFormat", () => {
   expectTypeOf<
     z.infer<typeof ZodIssueInvalidStringFormatSchema>
   >().toEqualTypeOf<$ZodIssueInvalidStringFormat>();
