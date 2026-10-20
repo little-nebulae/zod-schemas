@@ -21,13 +21,13 @@ export const ZOD_ISSUE_CODE_ENUM = {
   CUSTOM: "custom",
 } as const;
 
-export const ZodIssueInputSchema = z.unknown().exactOptional();
+const ZodIssueInputSchema = z.unknown().exactOptional();
 
-export const ZodIssuePathSchema = z.array(PropertyKeySchema);
+const ZodIssuePathSchema = z.array(PropertyKeySchema);
 
-export const ZodIssueMessageSchema = z.string();
+const ZodIssueMessageSchema = z.string();
 
-export const ZodIssueBaseSchema = z.object({
+const ZodIssueBaseSchema = z.object({
   [ZOD_ISSUE_CODE_KEY]: z.string().exactOptional(),
   input: ZodIssueInputSchema,
   path: ZodIssuePathSchema,
@@ -58,11 +58,13 @@ export const ZOD_INVALID_TYPE_EXPECTED_ENUM = {
   FUNCTION: "function",
 } as const;
 
-export const ZodIssueInvalidTypeSchema = z.object({
-  ...ZodIssueBaseSchema.shape,
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_TYPE),
-  expected: OpenEnumSchema(z.enum(ZOD_INVALID_TYPE_EXPECTED_ENUM)),
-});
+export const ZodIssueInvalidTypeSchema = z
+  .object({
+    ...ZodIssueBaseSchema.shape,
+    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_TYPE),
+    expected: OpenEnumSchema(z.enum(ZOD_INVALID_TYPE_EXPECTED_ENUM)),
+  })
+  .readonly();
 
 export const ZOD_BOUND_ORIGIN_ENUM = {
   NUMBER: "number",
@@ -79,45 +81,55 @@ export const ZodBoundOriginSchema = OpenEnumSchema(
   z.enum(ZOD_BOUND_ORIGIN_ENUM),
 );
 
-export const ZodIssueTooBigSchema = z.object({
-  ...ZodIssueBaseSchema.shape,
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.TOO_BIG),
-  origin: ZodBoundOriginSchema,
-  maximum: z.union([z.number(), z.bigint()]),
-  inclusive: z.boolean().exactOptional(),
-  exact: z.boolean().exactOptional(),
-});
+export const ZodIssueTooBigSchema = z
+  .object({
+    ...ZodIssueBaseSchema.shape,
+    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.TOO_BIG),
+    origin: ZodBoundOriginSchema,
+    maximum: z.union([z.number(), z.bigint()]),
+    inclusive: z.boolean().exactOptional(),
+    exact: z.boolean().exactOptional(),
+  })
+  .readonly();
 
-export const ZodIssueTooSmallSchema = z.object({
-  ...ZodIssueBaseSchema.shape,
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.TOO_SMALL),
-  origin: ZodBoundOriginSchema,
-  minimum: z.union([z.number(), z.bigint()]),
-  inclusive: z.boolean().exactOptional(),
-  exact: z.boolean().exactOptional(),
-});
+export const ZodIssueTooSmallSchema = z
+  .object({
+    ...ZodIssueBaseSchema.shape,
+    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.TOO_SMALL),
+    origin: ZodBoundOriginSchema,
+    minimum: z.union([z.number(), z.bigint()]),
+    inclusive: z.boolean().exactOptional(),
+    exact: z.boolean().exactOptional(),
+  })
+  .readonly();
 
-export const ZodIssueInvalidStringFormatSchema = z.object({
-  ...ZodIssueBaseSchema.shape,
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_FORMAT),
-  input: z.string().exactOptional(),
-  format: OpenEnumSchema(ZodStringFormatSchema),
-  pattern: z.string().exactOptional(),
-});
+export const ZodIssueInvalidStringFormatSchema = z
+  .object({
+    ...ZodIssueBaseSchema.shape,
+    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_FORMAT),
+    input: z.string().exactOptional(),
+    format: OpenEnumSchema(ZodStringFormatSchema),
+    pattern: z.string().exactOptional(),
+  })
+  .readonly();
 
-export const ZodIssueNotMultipleOfSchema = z.object({
-  ...ZodIssueBaseSchema.shape,
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.NOT_MULTIPLE_OF),
-  input: z.union([z.number(), z.bigint()]).exactOptional(),
-  divisor: z.number(),
-});
+export const ZodIssueNotMultipleOfSchema = z
+  .object({
+    ...ZodIssueBaseSchema.shape,
+    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.NOT_MULTIPLE_OF),
+    input: z.union([z.number(), z.bigint()]).exactOptional(),
+    divisor: z.number(),
+  })
+  .readonly();
 
-export const ZodIssueUnrecognizedKeysSchema = z.object({
-  ...ZodIssueBaseSchema.shape,
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.UNRECOGNIZED_KEYS),
-  input: z.record(z.string(), z.unknown()).exactOptional(),
-  keys: z.array(z.string()),
-});
+export const ZodIssueUnrecognizedKeysSchema = z
+  .object({
+    ...ZodIssueBaseSchema.shape,
+    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.UNRECOGNIZED_KEYS),
+    input: z.record(z.string(), z.unknown()).exactOptional(),
+    keys: z.array(z.string()),
+  })
+  .readonly();
 
 export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
@@ -132,14 +144,16 @@ export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   inclusive: z.literal(true).exactOptional(),
 });
 
-export const ZodIssueInvalidUnionMultipleMatchSchema = z.object({
-  ...ZodIssueBaseSchema.shape,
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
-  errors: z.tuple([]),
-  discriminator: z.string().optional(),
-  inclusive: z.literal(false),
-  matches: z.array(z.number()),
-});
+export const ZodIssueInvalidUnionMultipleMatchSchema = z
+  .object({
+    ...ZodIssueBaseSchema.shape,
+    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
+    errors: z.tuple([]),
+    discriminator: z.string().optional(),
+    inclusive: z.literal(false),
+    matches: z.array(z.number()),
+  })
+  .readonly();
 
 export const ZodIssueInvalidUnionSchema = z.union([
   ZodIssueInvalidUnionNoMatchSchema,
@@ -169,17 +183,21 @@ export const ZodIssueInvalidElement = z.object({
   },
 });
 
-export const ZodIssueInvalidValueSchema = z.object({
-  ...ZodIssueBaseSchema.shape,
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_VALUE),
-  values: z.array(PrimitiveSchema),
-});
+export const ZodIssueInvalidValueSchema = z
+  .object({
+    ...ZodIssueBaseSchema.shape,
+    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_VALUE),
+    values: z.array(PrimitiveSchema),
+  })
+  .readonly();
 
-export const ZodIssueCustomSchema = z.object({
-  ...ZodIssueBaseSchema.shape,
-  [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.CUSTOM),
-  params: z.record(z.string(), z.any()).optional(),
-});
+export const ZodIssueCustomSchema = z
+  .object({
+    ...ZodIssueBaseSchema.shape,
+    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.CUSTOM),
+    params: z.record(z.string(), z.any()).optional(),
+  })
+  .readonly();
 
 export const ZodIssueSchema = z.discriminatedUnion(ZOD_ISSUE_CODE_KEY, [
   ZodIssueInvalidTypeSchema,
