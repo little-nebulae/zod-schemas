@@ -86,9 +86,10 @@ type $ZodIssueInvalidUnionMultipleMatch = ExtractStrict<
 test("The inferred type of ZodIssueInvalidUnionNoMatchSchema should be equal to $ZodIssueInvalidUnionNoMatch when the errors property is ignored and the resulting type is wrapped with Readonly", () => {
   type Actual = z.infer<typeof ZodIssueInvalidUnionNoMatchSchema>;
   type Expected = $ZodIssueInvalidUnionNoMatch;
+  type MismatchProperty = "errors";
   expectTypeOf<Actual>().not.toEqualTypeOf<Expected>();
-  expectTypeOf<Readonly<Except<Actual, "errors">>>().toEqualTypeOf<
-    Except<Expected, "errors">
+  expectTypeOf<Readonly<Except<Actual, MismatchProperty>>>().toEqualTypeOf<
+    Except<Expected, MismatchProperty>
   >();
 });
 
