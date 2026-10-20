@@ -5,8 +5,30 @@ import { PrimitiveSchema } from "@/schemas/primitive";
 import { PropertyKeySchema } from "@/schemas/property-key";
 import { ZodStringFormatSchema } from "@/schemas/zod/string-format";
 
+/**
+ * Schemas modelling Zod's `$ZodIssue` type.
+ *
+ * ## Conventions
+ *
+ * - Every issue is discriminated on its `code` field (see {@link ZOD_ISSUE_CODE_KEY}).
+ * - Most issue schemas spread {@link ZodIssueBaseSchema} and are finished with
+ *   `.readonly()`.
+ * - **Circular schemas are the exception.** Schemas that reference
+ *   {@link ZodIssueSchema} through a getter (`get errors()` / `get issues()`):
+ *   - do **not** spread `ZodIssueBaseSchema` (spreading `.shape` would evaluate
+ *     the getters eagerly), so the base fields are declared inline instead, and
+ *   - are **not** chained with `.readonly()`, as that would break the lazy
+ *     getter-based recursion.
+ */
+
+// ============================================================================
+// Constants
+// ============================================================================
+
+/** The property name used to discriminate between issue types. */
 export const ZOD_ISSUE_CODE_KEY = "code";
 
+/** All known values of the issue `code` discriminator. */
 export const ZOD_ISSUE_CODE_ENUM = {
   INVALID_TYPE: "invalid_type",
   TOO_BIG: "too_big",
@@ -21,12 +43,25 @@ export const ZOD_ISSUE_CODE_ENUM = {
   CUSTOM: "custom",
 } as const;
 
+// ============================================================================
+// Base Schemas
+// ============================================================================
+
+/** The raw input that caused the issue. May be absent entirely. */
 const ZodIssueInputSchema = z.unknown().exactOptional();
 
+/** Path to the offending value, as a list of property keys. */
 const ZodIssuePathSchema = z.array(PropertyKeySchema);
 
+/** Human-readable description of the issue. */
 const ZodIssueMessageSchema = z.string();
 
+/**
+ * Fields shared by every issue.
+ *
+ * Spread via `.shape` into non-circular issue schemas. Circular schemas must
+ * re-declare these fields inline instead (see the file-level notes).
+ */
 const ZodIssueBaseSchema = z.object({
   [ZOD_ISSUE_CODE_KEY]: z.string().exactOptional(),
   input: ZodIssueInputSchema,
@@ -34,6 +69,11 @@ const ZodIssueBaseSchema = z.object({
   message: ZodIssueMessageSchema,
 });
 
+// ============================================================================
+// Type Issues
+// ============================================================================
+
+/** The `expected` types Zod may report on an `invalid_type` issue. */
 export const ZOD_INVALID_TYPE_EXPECTED_ENUM = {
   STRING: "string",
   NUMBER: "number",
@@ -58,6 +98,11 @@ export const ZOD_INVALID_TYPE_EXPECTED_ENUM = {
   FUNCTION: "function",
 } as const;
 
+/**
+ * Issue raised when the input is not of the expected type.
+ *
+ * `expected` is an open enum, so unknown values are tolerated.
+ */
 export const ZodIssueInvalidTypeSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
@@ -66,6 +111,11 @@ export const ZodIssueInvalidTypeSchema = z
   })
   .readonly();
 
+// ============================================================================
+// Bounds Issues (too_big / too_small)
+// ============================================================================
+
+/** The kinds of values that can have a size or value bound. */
 export const ZOD_BOUND_ORIGIN_ENUM = {
   NUMBER: "number",
   INT: "int",
@@ -77,10 +127,12 @@ export const ZOD_BOUND_ORIGIN_ENUM = {
   FILE: "file",
 } as const;
 
+/** The type of value a bound applies to. Open enum, so unknown origins pass. */
 export const ZodBoundOriginSchema = OpenEnumSchema(
   z.enum(ZOD_BOUND_ORIGIN_ENUM),
 );
 
+/** Issue raised when a value exceeds its maximum. */
 export const ZodIssueTooBigSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
@@ -92,6 +144,7 @@ export const ZodIssueTooBigSchema = z
   })
   .readonly();
 
+/** Issue raised when a value falls below its minimum. */
 export const ZodIssueTooSmallSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
@@ -103,6 +156,16 @@ export const ZodIssueTooSmallSchema = z
   })
   .readonly();
 
+// ============================================================================
+// Format & Value Issues
+// ============================================================================
+
+/**
+ * Issue raised when a string does not match the expected format
+ * (e.g. email, uuid, regex).
+ *
+ * Narrows the base `input` to a string.
+ */
 export const ZodIssueInvalidStringFormatSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
@@ -113,6 +176,11 @@ export const ZodIssueInvalidStringFormatSchema = z
   })
   .readonly();
 
+/**
+ * Issue raised when a number is not a multiple of `divisor`.
+ *
+ * Narrows the base `input` to a number or bigint.
+ */
 export const ZodIssueNotMultipleOfSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
@@ -122,6 +190,28 @@ export const ZodIssueNotMultipleOfSchema = z
   })
   .readonly();
 
+/**
+ * Issue raised when the input does not match any of the allowed literal
+ * values. `values` lists the accepted primitives.
+ */
+export const ZodIssueInvalidValueSchema = z
+  .object({
+    ...ZodIssueBaseSchema.shape,
+    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_VALUE),
+    values: z.array(PrimitiveSchema),
+  })
+  .readonly();
+
+// ============================================================================
+// Object Issues
+// ============================================================================
+
+/**
+ * Issue raised when a strict object contains keys that are not part of its
+ * schema. `keys` lists the unrecognized keys.
+ *
+ * Narrows the base `input` to a string-keyed record.
+ */
 export const ZodIssueUnrecognizedKeysSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
@@ -131,8 +221,22 @@ export const ZodIssueUnrecognizedKeysSchema = z
   })
   .readonly();
 
+// ============================================================================
+// Union Issues
+// ============================================================================
+
+/** The property name used to discriminate between the two union issue shapes. */
 export const ZOD_ISSUE_INVALID_UNION_INCLUSIVE_KEY = "inclusive";
 
+/**
+ * Union issue where the input matched **none** of the options.
+ *
+ * `errors` holds, per option, the issues that option produced.
+ *
+ * @remarks
+ * Circular: references {@link ZodIssueSchema} via a getter, so it does not
+ * spread {@link ZodIssueBaseSchema} and is not chained with `.readonly()`.
+ */
 export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_UNION),
   input: ZodIssueInputSchema,
@@ -146,6 +250,12 @@ export const ZodIssueInvalidUnionNoMatchSchema = z.object({
   [ZOD_ISSUE_INVALID_UNION_INCLUSIVE_KEY]: z.literal(true).exactOptional(),
 });
 
+/**
+ * Union issue where the input matched **more than one** option (only possible
+ * with exclusive unions).
+ *
+ * `matches` holds the indices of the options that matched.
+ */
 export const ZodIssueInvalidUnionMultipleMatchSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
@@ -157,11 +267,29 @@ export const ZodIssueInvalidUnionMultipleMatchSchema = z
   })
   .readonly();
 
+/**
+ * Issue raised when a union fails to validate, discriminated on
+ * {@link ZOD_ISSUE_INVALID_UNION_INCLUSIVE_KEY} into the no-match and
+ * multiple-match variants.
+ */
 export const ZodIssueInvalidUnionSchema = z.discriminatedUnion(
   ZOD_ISSUE_INVALID_UNION_INCLUSIVE_KEY,
   [ZodIssueInvalidUnionNoMatchSchema, ZodIssueInvalidUnionMultipleMatchSchema],
 );
 
+// ============================================================================
+// Collection Issues (Map / Set / Record)
+// ============================================================================
+
+/**
+ * Issue raised when a key in a map or record is invalid.
+ *
+ * `issues` contains the nested issues for the offending key.
+ *
+ * @remarks
+ * Circular: references {@link ZodIssueSchema} via a getter, so it does not
+ * spread {@link ZodIssueBaseSchema} and is not chained with `.readonly()`.
+ */
 export const ZodIssueInvalidKeySchema = z.object({
   [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_KEY),
   input: ZodIssueInputSchema,
@@ -173,6 +301,16 @@ export const ZodIssueInvalidKeySchema = z.object({
   },
 });
 
+/**
+ * Issue raised when an element of a map or set is invalid.
+ *
+ * `key` is the key of the offending entry and `issues` contains the nested
+ * issues for it.
+ *
+ * @remarks
+ * Circular: references {@link ZodIssueSchema} via a getter, so it does not
+ * spread {@link ZodIssueBaseSchema} and is not chained with `.readonly()`.
+ */
 export const ZodIssueInvalidElementSchema = z.object({
   [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_ELEMENT),
   input: ZodIssueInputSchema,
@@ -185,14 +323,14 @@ export const ZodIssueInvalidElementSchema = z.object({
   },
 });
 
-export const ZodIssueInvalidValueSchema = z
-  .object({
-    ...ZodIssueBaseSchema.shape,
-    [ZOD_ISSUE_CODE_KEY]: z.literal(ZOD_ISSUE_CODE_ENUM.INVALID_VALUE),
-    values: z.array(PrimitiveSchema),
-  })
-  .readonly();
+// ============================================================================
+// Custom Issues
+// ============================================================================
 
+/**
+ * Issue raised by custom validation logic (e.g. `.refine()` / `.superRefine()`).
+ * `params` may carry arbitrary extra data.
+ */
 export const ZodIssueCustomSchema = z
   .object({
     ...ZodIssueBaseSchema.shape,
@@ -201,6 +339,15 @@ export const ZodIssueCustomSchema = z
   })
   .readonly();
 
+// ============================================================================
+// Root Schema
+// ============================================================================
+
+/**
+ * Any Zod issue, discriminated on {@link ZOD_ISSUE_CODE_KEY}.
+ *
+ * This is the top-level schema modelling `$ZodIssue`.
+ */
 export const ZodIssueSchema = z.discriminatedUnion(ZOD_ISSUE_CODE_KEY, [
   ZodIssueInvalidTypeSchema,
   ZodIssueTooBigSchema,

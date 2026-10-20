@@ -14,6 +14,7 @@
     "typeCheck": true
   },
   "rules": {
+    "jsdoc/check-tag-names": ["warn", { "definedTags": ["remarks"] }],
     "import/consistent-type-specifier-style": "error",
     "import/no-cycle": "error",
     "import/no-duplicates": "error",
