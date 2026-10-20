@@ -155,7 +155,7 @@ export const ZodIssueInvalidUnionMultipleMatchSchema = z
   })
   .readonly();
 
-export const ZodIssueInvalidUnionSchema = z.union([
+export const ZodIssueInvalidUnionSchema = z.discriminatedUnion("inclusive", [
   ZodIssueInvalidUnionNoMatchSchema,
   ZodIssueInvalidUnionMultipleMatchSchema,
 ]);
@@ -206,7 +206,7 @@ export const ZodIssueSchema = z.discriminatedUnion(ZOD_ISSUE_CODE_KEY, [
   ZodIssueInvalidStringFormatSchema,
   ZodIssueNotMultipleOfSchema,
   ZodIssueUnrecognizedKeysSchema,
-  ...ZodIssueInvalidUnionSchema.options,
+  ZodIssueInvalidUnionSchema,
   ZodIssueInvalidKeySchema,
   ZodIssueInvalidElementSchema,
   ZodIssueInvalidValueSchema,
